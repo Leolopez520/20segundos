@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Geolocalización</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div id="area-nav">
+            <div><h2>Pide permisos de ubicación al navegador</h2></div>
+            <div>por navegador</div>
+            <div id="nlat"></div>
+            <div id="nlon"></div>
+        </div>
+    </body>
+    <script>
+        $(document).ready(function () {
+            function obtenerUbicacion() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.watchPosition(
+                        function (position) {
+                            $("#nlat").text(position.coords.latitude);
+                            $("#nlon").text(position.coords.longitude);
+                        },
+                        function (error) {
+                            console.log("Error al obtener la ubicación: ", error);
+                        },
+                        {
+                            maximumAge: 0,
+                            timeout: 5000,
+                            enableHighAccuracy: true
+                        }
+                    );
+                } else {
+                    console.log("Geolocalización no es soportada por este navegador.");
+                }
+            }
+
+            // Llamar a la función al cargar la página
+            obtenerUbicacion();
+
+            // Actualizar la ubicación cada 20 segundos
+            setInterval(obtenerUbicacion, 20000);
+        });
+    </script>
+</html>
